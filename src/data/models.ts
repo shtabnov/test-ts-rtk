@@ -1,7 +1,7 @@
 export interface IBrigades {
     id: number;
     brigade_name: string;
-    connectionStateId: boolean;
+    connectionStateId: number;
     department: {
         id: number;
     };
@@ -18,6 +18,6 @@ export interface IDepartment {
 }
 
 export interface IConnectionState {
-    connectionStateId: boolean;
+    connectionStateId: number;
     name: string;
 }

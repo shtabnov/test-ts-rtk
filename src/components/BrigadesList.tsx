@@ -9,31 +9,41 @@ import {
 
 interface BrigadesListProps {
     brigades: IBrigades[] | undefined;
+    filterConnectionValue: any;
+    filterDepartmentValue: any;
+    setQuantityBrigades: any;
 }
 
-const BrigadesList: FC<BrigadesListProps> = ({ brigades }) => {
+const BrigadesList: FC<BrigadesListProps> = ({
+    brigades,
+    filterConnectionValue,
+    filterDepartmentValue,
+    setQuantityBrigades,
+}) => {
     const { data: departments } = useGetDepartmentsQuery();
     const { data: connectionState } = useGetConnectionStateQuery();
 
-    // const filtredBrigades = brigades
-    //     .filter((brigade) => {
-    //         if (selectedDepartment === undefined) {
-    //             return brigade;
-    //         } else {
-    //             return brigade.department.id === selectedDepartment;
-    //         }
-    //     })
-    //     .filter((brigade) => {
-    //         if (selectedConnectionState === undefined) {
-    //             return brigade;
-    //         } else {
-    //             return brigade.connectionStateId === selectedConnectionState;
-    //         }
-    //     });
-    // handleCountBrigade(filtredBrigades.length);
+    const filtredBrigades =
+        brigades &&
+        brigades
+            .filter((brigade) => {
+                if (filterDepartmentValue === undefined) {
+                    return brigade;
+                } else {
+                    return brigade.department.id === filterDepartmentValue;
+                }
+            })
+            .filter((brigade) => {
+                if (filterConnectionValue === undefined) {
+                    return brigade;
+                } else {
+                    return brigade.connectionStateId === filterConnectionValue;
+                }
+            });
+    filtredBrigades && setQuantityBrigades(filtredBrigades.length);
     return (
         <div className="container w-full flex flex-wrap gap-3 justify-evenly mx-auto my-4 max-sm:mx-2">
-            {brigades?.map((brigade: IBrigades) => {
+            {filtredBrigades?.map((brigade: IBrigades) => {
                 return (
                     <BrigadesCard
                         key={brigade.id}

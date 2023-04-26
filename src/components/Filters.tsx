@@ -4,8 +4,19 @@ import {
     useGetConnectionStateQuery,
 } from '../store/api/dataAPI';
 import { IConnectionState, IDepartment } from '../data/models';
+import { FC } from 'react';
 
-const Filters = () => {
+interface FiltersProps {
+    setFilterConnectionValue: any;
+    setFilterDepartmentValue: any;
+    quantityBrigades: number;
+}
+
+const Filters: FC<FiltersProps> = ({
+    setFilterConnectionValue,
+    setFilterDepartmentValue,
+    quantityBrigades,
+}) => {
     const { data: departments } = useGetDepartmentsQuery();
     const { data: connectionState } = useGetConnectionStateQuery();
 
@@ -28,7 +39,9 @@ const Filters = () => {
                                     };
                                 }
                             )}
-                            onChange={(value): void => console.log(value)}
+                            onChange={(value): void =>
+                                setFilterConnectionValue(value)
+                            }
                         />
                     </div>
                     <div className="select-box w-52">
@@ -46,8 +59,13 @@ const Filters = () => {
                                     };
                                 }
                             )}
-                            onChange={(value): void => console.log(value)}
+                            onChange={(value): void =>
+                                setFilterDepartmentValue(value)
+                            }
                         />
+                    </div>
+                    <div className="mt-2 w-52">
+                        <h1>Всего бригад {quantityBrigades}</h1>
                     </div>
                 </div>
             </div>
