@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useGetBrigadesQuery } from './store/api/dataAPI';
+import Filters from './components/Filters';
+import Loading from './components/Loading';
+import BrigadesList from './components/BrigadesList';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const { data: brigades, isLoading, error } = useGetBrigadesQuery();
+
+    let content;
+
+    if (isLoading) {
+        content = <Loading />;
+    }
+    if (!isLoading) {
+        content = (
+            <>
+                <header className="w-screen sticky top-0 z-10">
+                    <Filters />
+                </header>
+                <BrigadesList brigades={brigades} />
+            </>
+        );
+    }
+
+    if (error) {
+        content = <h1>{JSON.stringify(error)}</h1>;
+    }
+
+    return (
+        <div className="container h-screen mx-auto flex flex-wrap gap-3 items-center justify-center">
+            {content}
+        </div>
+    );
 }
 
 export default App;
